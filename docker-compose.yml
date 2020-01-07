@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: Dockerfile.nginx
+    ports:
+      - 3780:80
+    depends_on:
+      - fpm
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 30
+        window: 120s
+  fpm:
+    build:
+      context: ./
+      dockerfile: Dockerfile.nginx
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://nginx:80/php"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 30
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 30
+        window: 120s
+

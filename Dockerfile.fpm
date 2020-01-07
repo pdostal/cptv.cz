@@ -1,0 +1,4 @@
+FROM php:5.6-fpm-alpine
+ADD www /var/www/html
+ADD php.ini /usr/local/etc/php/php.ini
+
